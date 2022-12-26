@@ -1,0 +1,334 @@
+$lightBrown: #735F58;
+$lightGray: #BABDBF;
+$darkGray: #262625;
+$ivory: #F2F2F2;
+$dark: #0D0D0C;
+
+.app {
+  display: flex;
+  justify-content: space-between;
+  .container {
+    display: flex;
+    justify-content: flex-start;
+    //Login+register
+
+    .link {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .auth {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100vw;
+      background-color: $lightBrown;
+
+      h1 {
+        font-size: 30px;
+        color: $darkGray;
+        margin-bottom: 20px;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        padding: 50px;
+        background-color: $ivory;
+        width: 200px;
+        gap: 20px;
+
+        input {
+          padding: 10px;
+          border: none;
+          border-bottom: 1px solid $lightGray;
+          background-color: $ivory;
+        }
+
+        button {
+          padding: 10px;
+          border: none;
+          background-color: $darkGray;
+          cursor: pointer;
+          color: $ivory;
+        }
+
+        p {
+          font-size: 12px;
+          color: $dark;
+          text-align: center;
+        }
+
+        span {
+          font-size: 12px;
+          text-align: center;
+        }
+      }
+    }
+
+    //navbar
+    .navbar {
+      display: flex;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      padding-left: 20px;
+      padding-right: 20px;
+      height: 100vh;
+      background-color: $lightGray;
+      .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .home-link {
+          margin: 0 auto;
+          font-size: 50px;
+          font-weight: 100;
+          color: $lightBrown;
+        }
+        .links {
+          display: flex;
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 10px;
+
+          h6 {
+            font-size: 16px;
+            font-weight: 300;
+          }
+
+          span {
+            cursor: pointer;
+          }
+
+          .write {
+            font-weight: 700;
+            color: $lightBrown;
+
+            &:hover {
+              color: $ivory;
+            }
+          }
+        }
+
+        .footer-menu {
+            display: flex;
+           flex-direction: column;
+          padding-bottom: 10px;
+        }
+      }
+    }
+
+    //HOME
+
+    .home {
+      padding-left: 40px;
+      padding-right: 40px;
+      .invoices {
+        margin-top: 50px;
+        display: flex;
+        flex-direction: column;
+        gap: 150px;
+
+        .invoice {
+          width: 100%;
+          border: 2px solid $lightGray;
+          padding: 10px;
+          display: flex;
+          gap: 100px;
+
+          .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            h1 {
+              font-size: 48px;
+            }
+
+            p {
+              font-size: 18px;
+            }
+
+            button {
+              width: max-content;
+              padding: 10px 20px;
+              margin-top: 30px;
+              cursor: pointer;
+              background-color: white;
+              border: 1px solid $darkGray;
+              color: $darkGray;;
+
+              &:hover {
+                border: 1px solid white;
+                background-color: $lightBrown;
+                color: $ivory;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    //invoice
+    .invoice {
+      padding: 0 30px 10px 30px;
+      display: flex;
+      gap: 50px;
+      flex-direction: column;
+      .content {
+        flex: 5;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+
+        .info {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 10px;
+          font-size: 14px;
+
+          span {
+            font-weight: bold;
+          }
+
+
+        }
+      }
+
+      h1 {
+        font-size: 42px;
+        color: $darkGray;
+      }
+
+      p {
+        text-align: justify;
+        line-height: 30px;
+      }
+
+      .edit {
+        display: flex;
+        gap: 5px;
+        align-items: baseline;
+        img {
+          width: 30px;
+          cursor: pointer;
+        }
+      }
+
+
+      .menu {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 25px;
+
+        .container {
+          display: flex;
+          gap: 20px;
+
+        }
+        h1 {
+          flex: 1;
+          font-size: 20px;
+          color: $dark;
+        }
+        .invoice {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          h2 {
+            color: $dark;
+            text-align: justify;
+          }
+
+          button {
+            width: max-content;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: white;
+            border: 1px solid $darkGray;
+            color: $darkGray;;
+
+            &:hover {
+              border: 1px solid white;
+              background-color: $lightBrown;
+              color: $ivory;
+            }
+          }
+        }
+      }
+    }
+
+    //write
+
+    .add {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 60px;
+      width: 90vw;
+
+      .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 20px;
+
+        input {
+          padding: 10px;
+          border: 1px solid $lightGray;
+        }
+      }
+
+      .menu {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .item {
+          border: 1px solid $lightGray;
+          padding: 20px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          font-size: 12px;
+          gap: 30px;
+          color: $dark;
+
+          h1 {
+            font-size: 20px;
+          }
+
+          .file {
+            text-decoration: underline;
+            cursor: pointer;
+          }
+
+          button {
+            cursor: pointer;
+            color: $dark;
+            background-color: $lightGray;
+            border: none;
+            padding: 3px 5px;
+          }
+        }
+
+        .item label {
+          text-align: center;
+        }
+
+        .status {
+          display: flex;
+          align-items: center;
+          gap: 2px;
+          color: $darkGray;
+        }
+      }
+    }
+  }
+}
