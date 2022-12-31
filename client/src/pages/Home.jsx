@@ -1,40 +1,34 @@
-import React from "react";
-import {Link} from 'react-router-dom';
+import React, {useEffect, useState} from "react";
+import {Link, useLocation} from 'react-router-dom';
+import axios from "axios";
 
 const Home = () => {
+    const [invoices, setInvoices] = useState([]);
 
-    const examples = [
-       {
-         id: 1,
-         title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-         desc: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!",
-       },
-       {
-         id: 2,
-         title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-         desc: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!",
-       },
-       {
-         id: 3,
-         title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-        desc: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!",
-       },
-       {
-         id: 4,
-         title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-         desc: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!",
-       },
-     ];
+    const status = useLocation().search;
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await axios.get(`/invoices${status}`);
+                setInvoices(res.data);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        fetchData();
+    }, [status]);
+
     return (
         <div className="home">
             <div className="invoices">
-                {examples.map((ex) => (
-                    <div className="invoice" key={ex.id}>
+                {invoices.map((invoice) => (
+                    <div className="invoice" key={invoice.id}>
                         <div className="content">
-                            <Link className="link" to={`/invoice/${ex.id}`}>
-                                <h1>{ex.title}</h1>
+                            <Link className="link" to={`/invoice/${invoice.id}`}>
+                                <h1>{invoice.company}</h1>
                             </Link>
-                            <p>{ex.desc}</p>
+                            <p>{invoice.desc}</p>
                             <button>More</button>
                         </div>
                     </div>
