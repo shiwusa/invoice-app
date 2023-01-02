@@ -1,40 +1,32 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+import axios from "axios";
 
-const Menu = () => {
-    const examples = [
-        {
-            id: 1,
-            title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-            desc: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!",
-        },
-        {
-            id: 2,
-            title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-            desc: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!",
-        },
-        {
-            id: 3,
-            title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-            desc: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!",
-        },
-        {
-            id: 4,
-            title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-            desc: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!",
-        },
-    ];
+const Menu = ({status}) => {
+    const [invoices, setInvoices] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await axios.get(`/invoices/?${status}`);
+                setInvoices(res.data);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        fetchData();
+    }, [status]);
+
     return (
         <div className="menu">
             <h1>Also with this status</h1>
             <div className="container">
-                {examples.map(ex=>(
-                    <div className="invoice" key={ex.id}>
-                        <h2>{ex.title}</h2>
+                {invoices.map(invoice => (
+                    <div className="invoice" key={invoice.id}>
+                        <h2>{invoice.company}</h2>
                         <button>View</button>
                     </div>
                 ))}
             </div>
-
         </div>
     )
 }

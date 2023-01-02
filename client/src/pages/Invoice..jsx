@@ -6,6 +6,7 @@ import Menu from "../components/Menu";
 import axios from "axios";
 import moment from "moment";
 import {AuthContext} from "../context/authContext";
+
 const Invoice = () => {
     const [invoice, setInvoice] = useState({});
 
@@ -50,14 +51,15 @@ const Invoice = () => {
                         {invoice.desc}
                     </p>
                 </div>
-                {currentUser.username === invoice.username && <div className="edit">
+                {currentUser.username === invoice.username && (
+                    <div className="edit">
                     <Link to={`/write?edit=2`}>
                         <img src={Edit} alt=""/>
                     </Link>
                     <img onClick={handleDelete} src={Delete} alt=""/>
-                </div>}
+                </div>)}
             </div>
-            <Menu />
+            <Menu status={invoice.status}/>
         </div>
     )
 }
