@@ -25,7 +25,31 @@ export const getInvoice = (req, res) => {
 };
 
 export const addInvoice = (req, res) => {
-    res.json("from controller");
+    const token = req.cookies.access_token;
+    if (!token) return res.status(401).json("Not authenticated");
+
+    jwt.verify(token, "jwtkey", (err, userInfo) => {
+        if (err) return res.status(403).json("Token is not valid");
+
+        const q =
+            "INSERT INTO invoices(`company`, `amount`, `desc`, `requester`, `date`,`uid`, `status`, `file`) VALUES (?)";
+
+        const values = [
+            req.body.company,
+            req.body.amount,
+            req.body.desc,
+            req.body.requester,
+            req.body.date,
+            userInfo.id,
+            req.body.status,
+            req.body.file,
+        ];
+
+        db.query(q, [values], (err, data) => {
+            if (err) return res.status(500).json(err);
+            return res.json("Post has been created");
+        });
+    });
 };
 
 export const deleteInvoice = (req, res) => {
@@ -46,5 +70,29 @@ export const deleteInvoice = (req, res) => {
 };
 
 export const updateInvoice = (req, res) => {
-    res.json("from controller");
+    const token = req.cookies.access_token;
+    if (!token) return res.status(401).json("Not authenticated");
+
+    jwt.verify(token, "jwtkey", (err, userInfo) => {
+        if (err) return res.status(403).json("Token is not valid");
+
+        const invoiceId = req.params.id;
+
+        const q =
+            "INSERT INTO invoices SET `company`=?, `amount`=?, `desc`=?, `requester`=?, `status`=?, `file`=? WHERE `id`=? AND `uid`=?";
+
+        const values = [
+            req.body.company,
+            req.body.amount,
+            req.body.desc,
+            req.body.requester,
+            req.body.status,
+            req.body.file,
+        ];
+
+        db.query(q, [...values, invoiceId, userInfo.id], (err, data) => {
+            if (err) return res.status(500).json(err);
+            return res.json("Post has been updated");
+        });
+    });
 };
