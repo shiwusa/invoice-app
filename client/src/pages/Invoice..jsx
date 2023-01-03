@@ -53,7 +53,7 @@ const Invoice = () => {
                 </div>
                 {currentUser.username === invoice.username && (
                     <div className="edit">
-                    <Link to={`/write?edit=2`}>
+                    <Link to={`/write?edit=2`} state={invoice}>
                         <img src={Edit} alt=""/>
                     </Link>
                     <img onClick={handleDelete} src={Delete} alt=""/>
