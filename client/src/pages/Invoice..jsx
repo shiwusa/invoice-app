@@ -45,11 +45,13 @@ const Invoice = () => {
                     <span>{invoice.username}</span>
                     <p>Created {moment(invoice.date).fromNow()}</p>
                 </div>
-                <div>
-                    <h1>{invoice.company}</h1>
-                    <p>
-                        {invoice.desc}
-                    </p>
+                <div className="details">
+                    <h1>Company: {invoice.company}</h1>
+                    <p>Description: {invoice.desc}</p>
+                    <p>Amount: {invoice.amount} ₴</p>
+                    <p>Requester: {invoice.requester}</p>
+                    <p>Status: {invoice.status}</p>
+                    <p>Show file: {invoice.file}</p>
                 </div>
                 {currentUser.username === invoice.username && (
                     <div className="edit">

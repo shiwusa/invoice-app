@@ -15,7 +15,7 @@ export const getInvoices = (req, res) => {
 
 export const getInvoice = (req, res) => {
     const q =
-        "SELECT i.id, `username`, `desc`, `company`, `date` FROM users u JOIN invoices i ON u.id = i.uid WHERE i.id = ?";
+        "SELECT i.id, `username`, `desc`, `company`, `date`, `amount`, `requester`, `status`, `file` FROM users u JOIN invoices i ON u.id = i.uid WHERE i.id = ?";
 
     db.query(q, [req.params.id], (err, data) => {
         if (err) return res.status(500).json(err);

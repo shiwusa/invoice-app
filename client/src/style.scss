@@ -115,8 +115,12 @@ $dark: #0D0D0C;
 
         .footer-menu {
             display: flex;
-           flex-direction: column;
-          padding-bottom: 10px;
+             flex-direction: column;
+            padding-bottom: 10px;
+
+          .link {
+            cursor: pointer;
+          }
         }
       }
     }
@@ -124,8 +128,9 @@ $dark: #0D0D0C;
     //HOME
 
     .home {
+      width: 80vw;
       padding-left: 40px;
-      padding-right: 40px;
+      padding-bottom: 40px;
       .invoices {
         margin-top: 50px;
         display: flex;
@@ -141,11 +146,12 @@ $dark: #0D0D0C;
 
           .content {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             justify-content: space-between;
+            align-items: center;
 
             h1 {
-              font-size: 48px;
+              font-size: 30px;
             }
 
             p {
@@ -155,7 +161,6 @@ $dark: #0D0D0C;
             button {
               width: max-content;
               padding: 10px 20px;
-              margin-top: 30px;
               cursor: pointer;
               background-color: white;
               border: 1px solid $darkGray;
@@ -178,11 +183,13 @@ $dark: #0D0D0C;
       display: flex;
       gap: 50px;
       flex-direction: column;
+      width: 85vw;
       .content {
         flex: 5;
         display: flex;
         flex-direction: column;
         gap: 30px;
+
 
         .info {
           display: flex;
@@ -207,6 +214,8 @@ $dark: #0D0D0C;
       p {
         text-align: justify;
         line-height: 30px;
+        word-break: break-all;
+        white-space: normal;
       }
 
       .edit {
@@ -221,26 +230,23 @@ $dark: #0D0D0C;
 
 
       .menu {
-        flex: 2;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 25px;
-
-        .container {
+        .menu-container {
           display: flex;
-          gap: 20px;
+          gap: 40px;
+          justify-content: space-around;
+        }
 
-        }
         h1 {
-          flex: 1;
-          font-size: 20px;
+          text-align: center;
+          font-size: 30px;
           color: $dark;
+          margin-bottom: 20px;
         }
-        .invoice {
+        .invoices {
           display: flex;
           flex-direction: column;
           align-items: center;
+          row-gap: 20px;
           h2 {
             color: $dark;
             text-align: justify;

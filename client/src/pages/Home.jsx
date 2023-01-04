@@ -19,10 +19,6 @@ const Home = () => {
         fetchData();
     }, [status]);
 
-    const getText = (html) =>{
-        const doc = new DOMParser().parseFromString(html, "text/html");
-        return doc.body.textContent
-    };
 
     return (
         <div className="home">
@@ -30,11 +26,13 @@ const Home = () => {
                 {invoices.map((invoice) => (
                     <div className="invoice" key={invoice.id}>
                         <div className="content">
-                            <Link className="link" to={`/invoice/${invoice.id}`}>
                                 <h1>{invoice.company}</h1>
+                                <p>Amount: {invoice.amount} ₴</p>
+                                <p>Status: {invoice.status}</p>
+                            <Link className="link" to={`/invoice/${invoice.id}`}>
+                                <button>More</button>
                             </Link>
-                            <p>{getText(invoice.desc)}</p>
-                            <button>More</button>
+
                         </div>
                     </div>
                 ))}

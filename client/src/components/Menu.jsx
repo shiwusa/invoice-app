@@ -19,9 +19,9 @@ const Menu = ({status}) => {
     return (
         <div className="menu">
             <h1>Also with this status</h1>
-            <div className="container">
+            <div className="menu-container">
                 {invoices.map(invoice => (
-                    <div className="invoice" key={invoice.id}>
+                    <div className="invoices" key={invoice.id}>
                         <h2>{invoice.company}</h2>
                         <button>View</button>
                     </div>
