@@ -7,7 +7,7 @@ const Menu = ({status}) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get(`/invoices/?${status}`);
+                const res = await axios.get(`/invoices/?status=${status}`);
                 setInvoices(res.data);
             } catch (err) {
                 console.log(err);
