@@ -2,16 +2,29 @@ import {db} from "../db.js";
 import jwt from "jsonwebtoken";
 
 export const getInvoices = (req, res) => {
-    const q = req.query.status
-        ? "SELECT * FROM invoices WHERE status=?"
-        : "SELECT * FROM invoices";
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 10;
+    const offset = (page - 1) * limit;
 
-    db.query(q, [req.query.status], (err, data) => {
+    const countQuery = req.query.status
+        ? `SELECT COUNT(*) as count FROM invoices WHERE status=?`
+        : `SELECT COUNT(*) as count FROM invoices`;
+
+    db.query(countQuery, [req.query.status], (err, countData) => {
         if (err) return res.status(500).send(err);
+        const totalPages = Math.ceil(countData[0].count / limit);
 
-        return res.status(200).json(data);
-    })
+        const q = req.query.status
+            ? `SELECT * FROM invoices WHERE status=? LIMIT ${limit} OFFSET ${offset}`
+            : `SELECT * FROM invoices LIMIT ${limit} OFFSET ${offset}`;
+
+        db.query(q, [req.query.status], (err, data) => {
+            if (err) return res.status(500).send(err);
+            return res.status(200).set({'x-total-pages': totalPages}).json(data);
+        })
+    });
 };
+
 
 export const getInvoice = (req, res) => {
     const q =

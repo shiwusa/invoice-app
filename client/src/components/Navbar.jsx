@@ -9,7 +9,7 @@ const Navbar = () => {
         <div className="navbar">
             <div className="container">
                 <div className="home-link">
-                    <Link className="link" to="/">
+                    <Link className="link" to="/?status=appr">
                         <h6>HOME</h6>
                     </Link>
                 </div>
@@ -40,7 +40,6 @@ const Navbar = () => {
                     </span>
                 </div>
                 <div className="footer-menu">
-
                     <span>{currentUser?.username}</span>
                     {currentUser ? (
                         <span className="link" onClick={logout}>Logout</span>
