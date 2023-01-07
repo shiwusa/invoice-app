@@ -4,21 +4,27 @@ import axios from "axios";
 
 const Home = () => {
     const [invoices, setInvoices] = useState([]);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     const status = useLocation().search;
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get(`/invoices${status}`);
+                const res = await axios.get(`/invoices${status}&page=${page}`);
                 setInvoices(res.data);
+                setTotalPages(res.headers['x-total-pages']);
             } catch (err) {
                 console.log(err);
             }
         }
         fetchData();
-    }, [status]);
+    }, [status, page, totalPages]);
 
+    useEffect(() => {
+        setPage(1);
+    }, [status]);
 
     return (
         <div className="home">
@@ -36,6 +42,10 @@ const Home = () => {
                         </div>
                     </div>
                 ))}
+                <div className="pagination">
+                    <button disabled={page == 1} onClick={() => setPage(page - 1)}>&#60;</button>
+                    <button disabled={page == totalPages} onClick={() => setPage(page + 1)}>&#62;</button>
+                </div>
             </div>
         </div>
     );
