@@ -1,6 +1,5 @@
 import React, {useContext, useState} from "react";
 import {Link, useNavigate} from 'react-router-dom';
-import axios from "axios";
 import {AuthContext} from "../context/authContext";
 
 const Login = () => {
@@ -22,7 +21,7 @@ const Login = () => {
         e.preventDefault();
         try {
             await login(inputs);
-            navigate("/");
+            navigate("/?status=appr");
         } catch (err) {
             setError(err.response.data);
         }

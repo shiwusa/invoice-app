@@ -46,11 +46,13 @@ const Write = () => {
                     file: file ? fileUrl : "",
                     date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")
                 });
-            navigate("/")
+            navigate("/?status=appr");
         } catch (err) {
             console.log(err);
         }
-    }
+    };
+
+
     return (
         <div className="add">
             <div className="content">
