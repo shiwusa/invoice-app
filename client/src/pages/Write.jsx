@@ -52,58 +52,67 @@ const Write = () => {
         }
     };
 
+    const statuses = [
+        { value: "appr", label: "Approved" },
+        { value: "cancel", label: "Cancel" },
+        { value: "hold", label: "Hold" },
+        { value: "paid", label: "Paid" },
+        { value: "sched", label: "Scheduled" },
+        { value: "ent", label: "Entered" },
+        { value: "pend", label: "Pending" },
+        { name: 'company', value: company, set: setCompany },
+        { name: 'amount', value: amount, set: setAmount },
+        { name: 'desc', value: desc, set: setDesc },
+        { name: 'requester', value: requester, set: setRequester },
+    ];
+
+    const renderStatusRadioInputs = () => {
+        return statuses.map((status) => {
+            return (
+                <div className="status">
+                    <input
+                        type="radio"
+                        checked={status.value === status}
+                        name="status"
+                        value={status.value}
+                        id={status.value}
+                        onChange={(e) => setStatus(e.target.value)}
+                    />
+                    <label htmlFor={status.value}>{status.label}</label>
+                </div>
+            );
+        });
+    };
 
     return (
         <div className="add">
             <div className="content">
-                <input type="text" value={company} placeholder="Company name" onChange={e=>setCompany(e.target.value)}/>
-                <input type="number" value={amount} placeholder="Amount" onChange={e=>setAmount(e.target.value)}/>
-                <input type="text" value={desc}  placeholder="Description" onChange={e=>setDesc(e.target.value)}/>
-                <input type="text" value={requester} placeholder="Requester" onChange={e=>setRequester(e.target.value)}/>
+                {statuses.map(({ name, value, set }) => (
+                    <input
+                        key={name}
+                        type="text"
+                        value={value}
+                        placeholder={`${name[0].toUpperCase()}${name.slice(1)}`}
+                        onChange={(e) => set(e.target.value)}
+                    />
+                ))}
             </div>
             <div className="menu">
                 <div className="item">
                     <h1>Status</h1>
-                    <div className="status">
-                        <input type="radio" checked={status === "appr"} name="status" value="appr" id="appr" onChange={e=>setStatus(e.target.value)}/>
-                        <label htmlFor="appr">Approved</label>
-                    </div>
-
-                    <div className="status">
-                        <input type="radio" checked={status === "cancel"} name="status" value="cancel" id="cancel" onChange={e=>setStatus(e.target.value)}/>
-                        <label htmlFor="cancel">Cancel</label>
-                    </div>
-
-                    <div className="status">
-                        <input type="radio" checked={status === "hold"} name="status" value="hold" id="hold" onChange={e=>setStatus(e.target.value)}/>
-                        <label htmlFor="hold">Hold</label>
-                    </div>
-
-                    <div className="status">
-                        <input type="radio" checked={status === "paid"} name="status" value="paid" id="paid" onChange={e=>setStatus(e.target.value)}/>
-                        <label htmlFor="paid">Paid</label>
-                    </div>
-
-                    <div className="status">
-                        <input type="radio" checked={status === "sched"} name="status" value="sched" id="sched" onChange={e=>setStatus(e.target.value)}/>
-                        <label htmlFor="sched">Scheduled</label>
-                    </div>
-
-                    <div className="status">
-                        <input type="radio" checked={status === "ent"} name="status" value="ent" id="ent" onChange={e=>setStatus(e.target.value)}/>
-                        <label htmlFor="ent">Entered</label>
-                    </div>
-
-                    <div className="status">
-                        <input type="radio" checked={status === "pend"} name="status" value="pend" id="pend" onChange={e=>setStatus(e.target.value)}/>
-                        <label htmlFor="pend">Pending</label>
-                    </div>
+                    {renderStatusRadioInputs()}
                 </div>
                 <div className="item">
-                    <input style={{display:"none"}} type="file" id="file" onChange={e=>setFile(e.target.files[0])}/>
-                    <label className="file" htmlFor="file">Upload file</label>
-                    <button onClick={handleSubmit} >Submit</button>
-
+                    <input
+                        style={{ display: "none" }}
+                        type="file"
+                        id="file"
+                        onChange={(e) => setFile(e.target.files[0])}
+                    />
+                    <label className="file" htmlFor="file">
+                        Upload file
+                    </label>
+                    <button onClick={handleSubmit}>Submit</button>
                 </div>
             </div>
         </div>
