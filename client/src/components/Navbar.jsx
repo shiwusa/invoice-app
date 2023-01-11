@@ -2,43 +2,45 @@ import React, {useContext} from "react";
 import {Link} from 'react-router-dom';
 import {AuthContext} from "../context/authContext";
 
+const LinkList = ({ links }) => {
+    return (
+        <>
+            {links.map((link, index) => (
+                <Link key={index} className="link" to={link.to}>
+                    <h6>{link.label}</h6>
+                </Link>
+            ))}
+        </>
+    );
+};
+
 const Navbar = () => {
     const { currentUser, logout } = useContext(AuthContext);
+
+    const links = [
+        { label: 'Approved', to: '/?status=appr' },
+        { label: 'Cancel', to: '/?status=cancel' },
+        { label: 'Hold', to: '/?status=hold' },
+        { label: 'Paid', to: '/?status=paid' },
+        { label: 'Scheduled', to: '/?status=sched' },
+        { label: 'Entered', to: '/?status=ent' },
+        { label: 'Pending', to: '/?status=pend' }
+    ];
 
     return (
         <div className="navbar">
             <div className="container">
                 <div className="home-link">
-                    <Link className="link" to="/?status=appr">
+                    <Link className="link" to="/">
                         <h6>HOME</h6>
                     </Link>
                 </div>
-                <div className="links">
-                    <Link className="link" to="/?status=appr">
-                        <h6>Approved</h6>
-                    </Link>
-                    <Link className="link" to="/?status=cancel">
-                        <h6>Cancel</h6>
-                    </Link>
-                    <Link className="link" to="/?status=hold">
-                        <h6>Hold</h6>
-                    </Link>
-                    <Link className="link" to="/?status=paid">
-                        <h6>Paid</h6>
-                    </Link>
-                    <Link className="link" to="/?status=sched">
-                        <h6>Scheduled</h6>
-                    </Link>
-                    <Link className="link" to="/?status=ent">
-                        <h6>Entered</h6>
-                    </Link>
-                    <Link className="link" to="/?status=pend">
-                        <h6>Pending</h6>
-                    </Link>
-                    <span className="write">
-                        <Link className="link" to="/write">Create invoice</Link>
-                    </span>
-                </div>
+                    <div className="links">
+                        <LinkList links={links} />
+                        <span className="write">
+                            <Link className="link" to="/write">Create invoice</Link>
+                        </span>
+                    </div>
                 <div className="footer-menu">
                     <span>{currentUser?.username}</span>
                     {currentUser ? (
@@ -49,8 +51,7 @@ const Navbar = () => {
                         </Link>
                     )}
                 </div>
-
-            </div>
+             </div>
         </div>
     )
 }
