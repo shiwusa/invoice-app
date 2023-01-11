@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import axios from "axios";
+
 import {useLocation, useNavigate} from "react-router-dom";
 import moment from "moment";
 
@@ -12,6 +13,7 @@ const Write = () => {
     const [requester, setRequester] = useState(state?.requester || "");
     const [file, setFile] = useState(null);
     const [status, setStatus] = useState(state?.status || "");
+
 
     const navigate = useNavigate();
     const upload = async () => {
@@ -60,25 +62,32 @@ const Write = () => {
         { value: "sched", label: "Scheduled" },
         { value: "ent", label: "Entered" },
         { value: "pend", label: "Pending" },
+    ];
+
+    const fields = [
         { name: 'company', value: company, set: setCompany },
         { name: 'amount', value: amount, set: setAmount },
-        { name: 'desc', value: desc, set: setDesc },
+        { name: 'description', value: desc, set: setDesc },
         { name: 'requester', value: requester, set: setRequester },
     ];
 
+    const handleChange = (e) => {
+        setStatus(e.target.value);
+    };
+
     const renderStatusRadioInputs = () => {
-        return statuses.map((status) => {
+        return statuses.map((item) => {
             return (
                 <div className="status">
                     <input
                         type="radio"
-                        checked={status.value === status}
+                        checked={item.value === status}
                         name="status"
-                        value={status.value}
-                        id={status.value}
-                        onChange={(e) => setStatus(e.target.value)}
+                        value={item.value}
+                        id={item.value}
+                        onChange={handleChange}
                     />
-                    <label htmlFor={status.value}>{status.label}</label>
+                    <label htmlFor={item.value}>{item.label}</label>
                 </div>
             );
         });
@@ -87,7 +96,7 @@ const Write = () => {
     return (
         <div className="add">
             <div className="content">
-                {statuses.map(({ name, value, set }) => (
+                {fields.map(({ name, value, set }) => (
                     <input
                         key={name}
                         type="text"
