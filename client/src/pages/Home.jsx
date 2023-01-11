@@ -12,9 +12,14 @@ const Home = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get(`/invoices${status}&page=${page}`);
+                let url = `/invoices`;
+                if(status){
+                    url = url + `${status}&page=${page}`;
+                }
+                const res = await axios.get(url);
                 setInvoices(res.data);
                 setTotalPages(res.headers['x-total-pages']);
+
             } catch (err) {
                 console.log(err);
             }
