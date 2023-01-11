@@ -51,9 +51,13 @@ const Invoice = () => {
                     <p>Amount: {invoice.amount} ₴</p>
                     <p>Requester: {invoice.requester}</p>
                     <p>Status: {invoice.status}</p>
-                    <p>Show file: {invoice.file}</p>
+                    {currentUser && (
+                        <Link  download={invoice.file}>
+                            Download file
+                        </Link>
+                        )}
                 </div>
-                {currentUser.username === invoice.username && (
+                {currentUser?.username === invoice.username && (
                     <div className="edit">
                     <Link to={`/write?edit=2`} state={invoice}>
                         <img src={Edit} alt=""/>

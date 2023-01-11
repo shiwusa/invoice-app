@@ -1,11 +1,14 @@
-import React, {useState} from "react";
+import React, {useContext, useState, useEffect} from "react";
 import axios from "axios";
 
 import {useLocation, useNavigate} from "react-router-dom";
 import moment from "moment";
+import {AuthContext} from "../context/authContext";
 
 const Write = () => {
     const state = useLocation().state;
+
+    const {currentUser} = useContext(AuthContext);
 
     const [company, setCompany] = useState(state?.company || "");
     const [amount, setAmount] = useState(state?.amount || "");
@@ -16,6 +19,16 @@ const Write = () => {
 
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!currentUser) {
+            navigate("/login");
+        }
+    }, [currentUser, navigate]);
+
+    if (!currentUser) {
+        return <p>Permission denied. Please log in to continue.</p>;
+    }
     const upload = async () => {
         try {
             const formData = new FormData();
