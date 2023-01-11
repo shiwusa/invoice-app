@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
+import {Link} from "react-router-dom";
 
 const Menu = ({status}) => {
     const [invoices, setInvoices] = useState([]);
@@ -23,7 +24,9 @@ const Menu = ({status}) => {
                 {invoices.map(invoice => (
                     <div className="invoices" key={invoice.id}>
                         <h2>{invoice.company}</h2>
-                        <button>View</button>
+                        <Link className="link" to={`/invoice/${invoice.id}`}>
+                            <button>View</button>
+                        </Link>
                     </div>
                 ))}
             </div>
