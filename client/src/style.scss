@@ -135,7 +135,28 @@ $dark: #0D0D0C;
         margin-top: 50px;
         display: flex;
         flex-direction: column;
-        gap: 150px;
+        gap: 100px;
+
+        .pagination {
+          display: flex;
+          justify-content: space-around;
+
+
+          button {
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 2px 25px;
+            background-color: $lightBrown;
+            color: $ivory;
+          }
+
+          button:disabled {
+            cursor: not-allowed;
+            background-color: $lightGray;
+
+          }
+        }
 
         .invoice {
           width: 100%;
