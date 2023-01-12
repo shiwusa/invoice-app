@@ -51,7 +51,7 @@ const Invoice = () => {
                     <p>Amount: {invoice.amount} ₴</p>
                     <p>Requester: {invoice.requester}</p>
                     <p>Status: {invoice.status}</p>
-                    {currentUser && (
+                    {currentUser && invoice.file && (
                         <Link  download={invoice.file}>
                             Download file
                         </Link>

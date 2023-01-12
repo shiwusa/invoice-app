@@ -42,7 +42,10 @@ const Write = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const fileUrl = await upload();
+        let fileUrl = '';
+        if(file){
+            fileUrl = await upload();
+        }
         try {
             state ? await axios.put(`/invoices/${state.id}`, {
                 company,
@@ -50,7 +53,7 @@ const Write = () => {
                 desc,
                 requester,
                 status,
-                file: file ? fileUrl : "",
+                file:fileUrl,
             }) :
                 await axios.post(`/invoices/`, {
                     company,
@@ -58,7 +61,7 @@ const Write = () => {
                     desc,
                     requester,
                     status,
-                    file: file ? fileUrl : "",
+                    file: fileUrl,
                     date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")
                 });
             navigate("/?status=appr");
