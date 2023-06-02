@@ -28,7 +28,7 @@ export const getInvoices = (req, res) => {
 
 export const getInvoice = (req, res) => {
     const q =
-        "SELECT i.id, `username`, `desc`, `company`, `date`, `amount`, `requester`, `status`, `file` FROM users u JOIN invoices i ON u.id = i.uid WHERE i.id = ?";
+        "SELECT i.id, `username`, `description`, `company`, `date`, `amount`, `requester`, `status`, `file` FROM users u JOIN invoices i ON u.id = i.user_id WHERE i.id = ?";
 
     db.query(q, [req.params.id], (err, data) => {
         if (err) return res.status(500).json(err);
@@ -45,12 +45,12 @@ export const addInvoice = (req, res) => {
         if (err) return res.status(403).json("Token is not valid");
 
         const q =
-            "INSERT INTO invoices(`company`, `amount`, `desc`, `requester`, `date`,`uid`, `status`, `file`) VALUES (?)";
+            "INSERT INTO invoices(`company`, `amount`, `description`, `requester`, `date`,`user_id`, `status`, `file`) VALUES (?)";
 
         const values = [
             req.body.company,
             req.body.amount,
-            req.body.desc,
+            req.body.description,
             req.body.requester,
             req.body.date,
             userInfo.id,
@@ -73,7 +73,7 @@ export const deleteInvoice = (req, res) => {
         if (err) return res.status(403).json("Token is not valid");
 
         const invoiceId = req.params.id;
-        const q = "DELETE FROM invoices WHERE `id` = ? AND `uid` = ?";
+        const q = "DELETE FROM invoices WHERE `id` = ? AND `user_id` = ?";
 
         db.query(q, [invoiceId, userInfo.id], (err, data) => {
             if (err) return res.status(403).json("You can delete only your invoices");
@@ -92,12 +92,12 @@ export const updateInvoice = (req, res) => {
         const invoiceId = req.params.id;
 
         const q =
-            "INSERT INTO invoices SET `company`=?, `amount`=?, `desc`=?, `requester`=?, `status`=?, `file`=? WHERE `id`=? AND `uid`=?";
+            "UPDATE invoices SET `company`=?, `amount`=?, `description`=?, `requester`=?, `status`=?, `file`=? WHERE `id`=? AND `user_id`=?";
 
         const values = [
             req.body.company,
             req.body.amount,
-            req.body.desc,
+            req.body.description,
             req.body.requester,
             req.body.status,
             req.body.file,

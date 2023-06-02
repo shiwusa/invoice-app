@@ -12,7 +12,7 @@ const Write = () => {
 
     const [company, setCompany] = useState(state?.company || "");
     const [amount, setAmount] = useState(state?.amount || "");
-    const [desc, setDesc] = useState(state?.desc || "");
+    const [description, setDescription] = useState(state?.description || "");
     const [requester, setRequester] = useState(state?.requester || "");
     const [file, setFile] = useState(null);
     const [status, setStatus] = useState(state?.status || "");
@@ -50,7 +50,7 @@ const Write = () => {
             state ? await axios.put(`/invoices/${state.id}`, {
                 company,
                 amount,
-                desc,
+                description,
                 requester,
                 status,
                 file:fileUrl,
@@ -58,7 +58,7 @@ const Write = () => {
                 await axios.post(`/invoices/`, {
                     company,
                     amount,
-                    desc,
+                    description,
                     requester,
                     status,
                     file: fileUrl,
@@ -83,7 +83,7 @@ const Write = () => {
     const fields = [
         { name: 'company', value: company, set: setCompany },
         { name: 'amount', value: amount, set: setAmount },
-        { name: 'description', value: desc, set: setDesc },
+        { name: 'description', value: description, set: setDescription },
         { name: 'requester', value: requester, set: setRequester },
     ];
 
