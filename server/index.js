@@ -1,8 +1,10 @@
 import express from "express";
 import invoiceRoutes from "./routes/invoices.js";
 import authRoutes from "./routes/auth.js";
-import cookieParser from "cookie-parser"
+import cookieParser from "cookie-parser";
 import multer from "multer";
+import config from "./config.js";
+import "./db.js"
 
 const app = express();
 
@@ -28,7 +30,6 @@ app.post("/api/upload", upload.single("file"), function (req, res) {
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/auth", authRoutes);
 
-
-app.listen(8800, () => {
-    console.log("Connected");
+app.listen(config.port, config.hostname, () => {
+    console.log(`Connected on ${config.hostname}:${config.port}`);
 });
