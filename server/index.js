@@ -3,8 +3,10 @@ import invoiceRoutes from "./routes/invoices.js";
 import authRoutes from "./routes/auth.js";
 import cookieParser from "cookie-parser";
 import multer from "multer";
+import path from "path";
 import config from "./config.js";
 import "./db.js"
+
 
 const app = express();
 
@@ -12,13 +14,14 @@ app.use(express.json());
 app.use(cookieParser());
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "../client/public/upload");
-    },
+    destination: "../client/public/upload",
     filename: function (req, file, cb) {
-        cb(null, Date.now() + file.originalname);
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const fileExtension = path.extname(file.originalname);
+        cb(null, `${uniqueSuffix}${fileExtension}`);
     },
 });
+
 
 const upload = multer({ storage });
 
