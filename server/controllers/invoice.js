@@ -1,95 +1,80 @@
-import {db} from "../db.js";
+import {
+    getInvoicesFromDB,
+    getInvoiceFromDB,
+    addInvoiceToDB,
+    deleteInvoiceFromDB,
+    updateInvoiceInDB,
+} from "../services/invoiceService.js";
 
 export const getInvoices = (req, res) => {
-    const page = req.query.page || 1;
-    const limit = req.query.limit || 10;
-    const offset = (page - 1) * limit;
+    const params = {
+        status: req.query.status,
+        page: req.query.page,
+        limit: req.query.limit,
+    };
 
-    const countQuery = req.query.status
-        ? `SELECT COUNT(*) as count FROM invoices WHERE status=?`
-        : `SELECT COUNT(*) as count FROM invoices`;
-
-    db.query(countQuery, [req.query.status], (err, countData) => {
+    getInvoicesFromDB(params, (err, result) => {
         if (err) return res.status(500).send(err);
-        const totalPages = Math.ceil(countData[0].count / limit);
-
-        const q = req.query.status
-            ? `SELECT * FROM invoices WHERE status=? LIMIT ${limit} OFFSET ${offset}`
-            : `SELECT * FROM invoices LIMIT ${limit} OFFSET ${offset}`;
-
-        db.query(q, [req.query.status], (err, data) => {
-            if (err) return res.status(500).send(err);
-            return res.status(200).set({'x-total-pages': totalPages}).json(data);
-        })
+        const { totalPages, data } = result;
+        return res
+            .status(200)
+            .set({ "x-total-pages": totalPages })
+            .json(data);
     });
 };
 
-
 export const getInvoice = (req, res) => {
-    const q =
-        "SELECT i.id, `username`, `description`, `company`, `date`, `amount`, `requester`, `status`, `file` FROM users u JOIN invoices i ON u.id = i.user_id WHERE i.id = ?";
+    const invoiceId = req.params.id;
 
-    db.query(q, [req.params.id], (err, data) => {
+    getInvoiceFromDB(invoiceId, (err, data) => {
         if (err) return res.status(500).json(err);
-
-        return res.status(200).json(data[0]);
+        return res.status(200).json(data);
     });
 };
 
 export const addInvoice = (req, res) => {
-    const userInfo = req.userId;
+    const invoiceData = {
+        company: req.body.company,
+        amount: req.body.amount,
+        description: req.body.description,
+        requester: req.body.requester,
+        date: req.body.date,
+        status: req.body.status,
+        file: req.body.file,
+        userId: req.userId,
+    };
 
-    const q =
-        "INSERT INTO invoices(`company`, `amount`, `description`, `requester`, `date`,`user_id`, `status`, `file`) VALUES (?)";
-
-    const values = [
-        req.body.company,
-        req.body.amount,
-        req.body.description,
-        req.body.requester,
-        req.body.date,
-        userInfo,
-        req.body.status,
-        req.body.file,
-    ];
-
-    db.query(q, [values], (err, data) => {
+    addInvoiceToDB(invoiceData, (err, result) => {
         if (err) return res.status(500).json(err);
-        return res.json("Post has been created");
+        return res.json(result);
     });
 };
 
 export const deleteInvoice = (req, res) => {
-    const userInfo = req.userId;
-
     const invoiceId = req.params.id;
-    const q = "DELETE FROM invoices WHERE `id` = ? AND `user_id` = ?";
+    const userId = req.userId;
 
-    db.query(q, [invoiceId, userInfo], (err, data) => {
-        if (err) return res.status(403).json("You can delete only your invoices");
-        return res.json("Post has been deleted");
+    deleteInvoiceFromDB(invoiceId, userId, (err, result) => {
+        if (err) return res.status(403).json(err);
+        return res.json(result);
     });
 };
 
 export const updateInvoice = (req, res) => {
-    const userInfo = req.userId;
-
     const invoiceId = req.params.id;
+    const userId = req.userId;
 
-    const q =
-        "UPDATE invoices SET `company`=?, `amount`=?, `description`=?, `requester`=?, `status`=?, `file`=? WHERE `id`=? AND `user_id`=?";
+    const invoiceData = {
+        company: req.body.company,
+        amount: req.body.amount,
+        description: req.body.description,
+        requester: req.body.requester,
+        status: req.body.status,
+        file: req.body.file,
+    };
 
-    const values = [
-        req.body.company,
-        req.body.amount,
-        req.body.description,
-        req.body.requester,
-        req.body.status,
-        req.body.file,
-    ];
-
-    db.query(q, [...values, invoiceId, userInfo], (err, data) => {
+    updateInvoiceInDB(invoiceId, userId, invoiceData, (err, result) => {
         if (err) return res.status(500).json(err);
-        return res.json("Post has been updated");
+        return res.json(result);
     });
 };
