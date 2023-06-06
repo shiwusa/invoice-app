@@ -1,5 +1,4 @@
 import {db} from "../db.js";
-import jwt from "jsonwebtoken";
 
 export const getInvoices = (req, res) => {
     const page = req.query.page || 1;
@@ -38,74 +37,59 @@ export const getInvoice = (req, res) => {
 };
 
 export const addInvoice = (req, res) => {
-    const token = req.cookies.access_token;
-    if (!token) return res.status(401).json("Not authenticated");
+    const userInfo = req.userId;
 
-    jwt.verify(token, "jwtkey", (err, userInfo) => {
-        if (err) return res.status(403).json("Token is not valid");
+    const q =
+        "INSERT INTO invoices(`company`, `amount`, `description`, `requester`, `date`,`user_id`, `status`, `file`) VALUES (?)";
 
-        const q =
-            "INSERT INTO invoices(`company`, `amount`, `description`, `requester`, `date`,`user_id`, `status`, `file`) VALUES (?)";
+    const values = [
+        req.body.company,
+        req.body.amount,
+        req.body.description,
+        req.body.requester,
+        req.body.date,
+        userInfo,
+        req.body.status,
+        req.body.file,
+    ];
 
-        const values = [
-            req.body.company,
-            req.body.amount,
-            req.body.description,
-            req.body.requester,
-            req.body.date,
-            userInfo.id,
-            req.body.status,
-            req.body.file,
-        ];
-
-        db.query(q, [values], (err, data) => {
-            if (err) return res.status(500).json(err);
-            return res.json("Post has been created");
-        });
+    db.query(q, [values], (err, data) => {
+        if (err) return res.status(500).json(err);
+        return res.json("Post has been created");
     });
 };
 
 export const deleteInvoice = (req, res) => {
-    const token = req.cookies.access_token;
-    if (!token) return res.status(401).json("Not authenticated");
+    const userInfo = req.userId;
 
-    jwt.verify(token, "jwtkey", (err, userInfo) => {
-        if (err) return res.status(403).json("Token is not valid");
+    const invoiceId = req.params.id;
+    const q = "DELETE FROM invoices WHERE `id` = ? AND `user_id` = ?";
 
-        const invoiceId = req.params.id;
-        const q = "DELETE FROM invoices WHERE `id` = ? AND `user_id` = ?";
-
-        db.query(q, [invoiceId, userInfo.id], (err, data) => {
-            if (err) return res.status(403).json("You can delete only your invoices");
-            return res.json("Post has been deleted");
-        });
+    db.query(q, [invoiceId, userInfo], (err, data) => {
+        if (err) return res.status(403).json("You can delete only your invoices");
+        return res.json("Post has been deleted");
     });
 };
 
 export const updateInvoice = (req, res) => {
-    const token = req.cookies.access_token;
-    if (!token) return res.status(401).json("Not authenticated");
+    const userInfo = req.userId;
 
-    jwt.verify(token, "jwtkey", (err, userInfo) => {
-        if (err) return res.status(403).json("Token is not valid");
+    const invoiceId = req.params.id;
 
-        const invoiceId = req.params.id;
+    const q =
+        "UPDATE invoices SET `company`=?, `amount`=?, `description`=?, `requester`=?, `status`=?, `file`=? WHERE `id`=? AND `user_id`=?";
 
-        const q =
-            "UPDATE invoices SET `company`=?, `amount`=?, `description`=?, `requester`=?, `status`=?, `file`=? WHERE `id`=? AND `user_id`=?";
+    const values = [
+        req.body.company,
+        req.body.amount,
+        req.body.description,
+        req.body.requester,
+        req.body.status,
+        req.body.file,
+    ];
 
-        const values = [
-            req.body.company,
-            req.body.amount,
-            req.body.description,
-            req.body.requester,
-            req.body.status,
-            req.body.file,
-        ];
-
-        db.query(q, [...values, invoiceId, userInfo.id], (err, data) => {
-            if (err) return res.status(500).json(err);
-            return res.json("Post has been updated");
-        });
+    db.query(q, [...values, invoiceId, userInfo], (err, data) => {
+        if (err) return res.status(500).json(err);
+        return res.json("Post has been updated");
     });
 };

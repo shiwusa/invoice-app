@@ -75,3 +75,20 @@ export const logout = (req, res) => {
         secure:true
     }).status(200).json("User has been logged out");
 };
+
+export const verifyToken = (req, res, next) => {
+    const token = req.cookies.access_token;
+    if (!token) {
+        return res.status(401).json("Not authenticated");
+    }
+
+    jwt.verify(token, config.jwtSecret, (err, userInfo) => {
+        if (err) {
+            return res.status(403).json("Token is not valid");
+        } else {
+            req.userId = userInfo.id;
+            next();
+        }
+
+    });
+};
