@@ -2,7 +2,7 @@ import React, {useContext, useState, useEffect} from "react";
 import axios from "axios";
 
 import {useLocation, useNavigate} from "react-router-dom";
-import moment from "moment";
+import { format } from "date-fns";
 import {AuthContext} from "../context/authContext";
 
 const Write = () => {
@@ -62,7 +62,7 @@ const Write = () => {
                     requester,
                     status,
                     file: fileUrl,
-                    date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")
+                    date: format(new Date(), "yyyy-MM-dd HH:mm:ss")
                 });
             navigate("/?status=appr");
         } catch (err) {

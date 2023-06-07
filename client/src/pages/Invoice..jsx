@@ -4,7 +4,7 @@ import Delete from "../img/delete.png";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import Menu from "../components/Menu";
 import axios from "axios";
-import moment from "moment";
+import { formatDistanceToNow } from "date-fns";
 import {AuthContext} from "../context/authContext";
 
 const Invoice = () => {
@@ -14,6 +14,10 @@ const Invoice = () => {
     const navigate = useNavigate();
 
     const invoiceId = location.pathname.split("/")[2];
+
+    const date = invoice.date
+        ? formatDistanceToNow(new Date(invoice.date))
+        : "";
 
     const {currentUser} = useContext(AuthContext);
 
@@ -43,7 +47,7 @@ const Invoice = () => {
             <div className="content">
                 <div className="info">
                     <span>{invoice.username}</span>
-                    <p>Created {moment(invoice.date).fromNow()}</p>
+                    <p>Created {date} ago</p>
                 </div>
                 <div className="details">
                     <h1>Company: {invoice.company}</h1>
