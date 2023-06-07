@@ -3,7 +3,6 @@ import Edit from "../img/edit.png";
 import Delete from "../img/delete.png";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import Menu from "../components/Menu";
-import axios from "axios";
 import { formatDistanceToNow } from "date-fns";
 import {AuthContext} from "../context/authContext";
 
@@ -24,8 +23,9 @@ const Invoice = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get(`/invoices/${invoiceId}`);
-                setInvoice(res.data);
+                const res = await fetch(`/invoices/${invoiceId}`);
+                const data = await res.json();
+                setInvoice(data);
             } catch (err) {
                 console.log(err);
             }
@@ -35,7 +35,9 @@ const Invoice = () => {
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`/invoices/${invoiceId}`);
+            await fetch(`/invoices/${invoiceId}`, {
+                method: "DELETE",
+            });
             navigate("/");
         } catch (err) {
             console.log(err);

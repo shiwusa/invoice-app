@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {Link, useLocation} from 'react-router-dom';
-import axios from "axios";
 
 const Home = () => {
     const [invoices, setInvoices] = useState([]);
@@ -14,18 +13,20 @@ const Home = () => {
             try {
                 let url = `/invoices`;
                 if(status){
-                    url = url + `${status}&page=${page}`;
+                    url = `${url}${status}&page=${page}`;
+                } else {
+                    url = `${url}?page=${page}`;
                 }
-                const res = await axios.get(url);
-                setInvoices(res.data);
-                setTotalPages(res.headers['x-total-pages']);
-
+                const res = await fetch(url);
+                const data = await res.json();
+                setInvoices(data);
+                setTotalPages(parseInt(res.headers.get('x-total-pages')));
             } catch (err) {
                 console.log(err);
             }
         }
         fetchData();
-    }, [status, page, totalPages]);
+    }, [status, page]);
 
     useEffect(() => {
         setPage(1);
@@ -48,8 +49,8 @@ const Home = () => {
                     </div>
                 ))}
                 <div className="pagination">
-                    <button disabled={page == 1} onClick={() => setPage(page - 1)}>&#60;</button>
-                    <button disabled={page == totalPages} onClick={() => setPage(page + 1)}>&#62;</button>
+                    <button disabled={page === 1} onClick={() => setPage(page - 1)}>&#60;</button>
+                    <button disabled={page === totalPages} onClick={() => setPage(page + 1)}>&#62;</button>
                 </div>
             </div>
         </div>

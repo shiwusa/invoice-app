@@ -1,8 +1,6 @@
-import React, {useContext, useState, useEffect} from "react";
-import axios from "axios";
-
+import React, {useContext, useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-import { format } from "date-fns";
+import {format} from "date-fns";
 import {AuthContext} from "../context/authContext";
 
 const Write = () => {
@@ -33,8 +31,11 @@ const Write = () => {
         try {
             const formData = new FormData();
             formData.append("file", file);
-            const res = await axios.post("/upload", formData);
-            return res.data;
+            const res = await fetch("/upload", {
+                method: "POST",
+                body: formData,
+            });
+            return await res.json();
         } catch (err) {
             console.log(err);
         }
@@ -47,23 +48,38 @@ const Write = () => {
             fileUrl = await upload();
         }
         try {
-            state ? await axios.put(`/invoices/${state.id}`, {
-                company,
-                amount,
-                description,
-                requester,
-                status,
-                file:fileUrl,
-            }) :
-                await axios.post(`/invoices/`, {
-                    company,
-                    amount,
-                    description,
-                    requester,
-                    status,
-                    file: fileUrl,
-                    date: format(new Date(), "yyyy-MM-dd HH:mm:ss")
+            if (state) {
+                await fetch(`/invoices/${state.id}`, {
+                    method: "PUT",
+                    body: JSON.stringify({
+                        company,
+                        amount,
+                        description,
+                        requester,
+                        status,
+                        file: fileUrl,
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                 });
+            } else {
+                await fetch(`/invoices/`, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        company,
+                        amount,
+                        description,
+                        requester,
+                        status,
+                        file: fileUrl,
+                        date: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+            }
             navigate("/?status=appr");
         } catch (err) {
             console.log(err);

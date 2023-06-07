@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import {Link, useNavigate} from 'react-router-dom';
-import axios from "axios";
 
 const Register = () => {
     const [inputs, setInputs] = useState({
@@ -20,10 +19,16 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("/auth/register", inputs);
-            navigate("/login");
+            const res = await fetch("/auth/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(inputs),
+            });
+            if (res.ok) navigate("/login");
         } catch (err) {
-            setError(err.response.data);
+            setError(err.res.data);
         }
     };
 
