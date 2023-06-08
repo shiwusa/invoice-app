@@ -1,6 +1,12 @@
 import express from "express";
-import {addInvoice, deleteInvoice, getInvoice, getInvoices, updateInvoice} from "../controllers/invoice.js";
-import {verifyToken} from "../controllers/auth.js";
+import {
+  addInvoice,
+  deleteInvoice,
+  getInvoice,
+  getInvoices,
+  updateInvoice,
+} from "../controllers/invoice.js";
+import { verifyToken } from "../controllers/auth.js";
 
 const router = express.Router();
 

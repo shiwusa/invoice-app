@@ -2,39 +2,39 @@ import mysql from "mysql";
 import config from "./config.js";
 
 export const db = mysql.createPool({
-    connectionLimit: 10,
-    host: config.db.host,
-    user: config.db.user,
-    password: config.db.password,
-    database: config.db.database,
+  connectionLimit: 10,
+  host: config.db.host,
+  user: config.db.user,
+  password: config.db.password,
+  database: config.db.database,
 });
 
 const createDatabase = () => {
-    return new Promise((resolve, reject) => {
-        db.query(`CREATE DATABASE IF NOT EXISTS ${config.db.database}`, (err) => {
-            if (err) reject(err);
-            else {
-                console.log(`Database ${config.db.database} created or already exists`);
-                resolve();
-            }
-        });
+  return new Promise((resolve, reject) => {
+    db.query(`CREATE DATABASE IF NOT EXISTS ${config.db.database}`, (err) => {
+      if (err) reject(err);
+      else {
+        console.log(`Database ${config.db.database} created or already exists`);
+        resolve();
+      }
     });
+  });
 };
 
 const changeDatabase = () => {
-    return new Promise((resolve, reject) => {
-        db.changeUser({ database: config.db.database }, (err) => {
-            if (err) reject(err);
-            else {
-                console.log(`Using database ${config.db.database}`);
-                resolve();
-            }
-        });
+  return new Promise((resolve, reject) => {
+    db.changeUser({ database: config.db.database }, (err) => {
+      if (err) reject(err);
+      else {
+        console.log(`Using database ${config.db.database}`);
+        resolve();
+      }
     });
+  });
 };
 
 const createUsersTable = () => {
-    const createUsersQuery = `
+  const createUsersQuery = `
     CREATE TABLE IF NOT EXISTS users (
       id INT AUTO_INCREMENT PRIMARY KEY,
       username VARCHAR(255) NOT NULL,
@@ -43,19 +43,19 @@ const createUsersTable = () => {
     )
   `;
 
-    return new Promise((resolve, reject) => {
-        db.query(createUsersQuery, (err) => {
-            if (err) reject(err);
-            else {
-                console.log('Table "users" created or already exists');
-                resolve();
-            }
-        });
+  return new Promise((resolve, reject) => {
+    db.query(createUsersQuery, (err) => {
+      if (err) reject(err);
+      else {
+        console.log('Table "users" created or already exists');
+        resolve();
+      }
     });
+  });
 };
 
 const createInvoicesTable = () => {
-    const createInvoicesQuery = `
+  const createInvoicesQuery = `
     CREATE TABLE IF NOT EXISTS invoices (
       id INT AUTO_INCREMENT PRIMARY KEY,
       company TEXT,
@@ -70,34 +70,34 @@ const createInvoicesTable = () => {
     )
   `;
 
-    return new Promise((resolve, reject) => {
-        db.query(createInvoicesQuery, (err) => {
-            if (err) reject(err);
-            else {
-                console.log('Table "invoices" created or already exists');
-                resolve();
-            }
-        });
+  return new Promise((resolve, reject) => {
+    db.query(createInvoicesQuery, (err) => {
+      if (err) reject(err);
+      else {
+        console.log('Table "invoices" created or already exists');
+        resolve();
+      }
     });
+  });
 };
 
 export const initializeDatabase = async () => {
-    try {
-        const connection = await new Promise((resolve, reject) => {
-            db.getConnection((err, connection) => {
-                if (err) reject(err);
-                else resolve(connection);
-            });
-        });
+  try {
+    const connection = await new Promise((resolve, reject) => {
+      db.getConnection((err, connection) => {
+        if (err) reject(err);
+        else resolve(connection);
+      });
+    });
 
-        await createDatabase();
-        await changeDatabase();
-        await createUsersTable();
-        await createInvoicesTable();
+    await createDatabase();
+    await changeDatabase();
+    await createUsersTable();
+    await createInvoicesTable();
 
-        connection.release();
-        console.log('Database initialization completed.');
-    } catch (error) {
-        console.error('Error initializing database:', error);
-    }
+    connection.release();
+    console.log("Database initialization completed.");
+  } catch (error) {
+    console.error("Error initializing database:", error);
+  }
 };

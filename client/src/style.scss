@@ -7,6 +7,7 @@ $dark: #0D0D0C;
 .app {
   display: flex;
   justify-content: space-between;
+
   .container {
     display: flex;
     justify-content: flex-start;
@@ -78,16 +79,19 @@ $dark: #0D0D0C;
       padding-right: 20px;
       height: 100vh;
       background-color: $lightGray;
+
       .container {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+
         .home-link {
           margin: 0 auto;
           font-size: 50px;
           font-weight: 100;
           color: $lightBrown;
         }
+
         .links {
           display: flex;
           align-items: flex-start;
@@ -114,9 +118,9 @@ $dark: #0D0D0C;
         }
 
         .footer-menu {
-            display: flex;
-             flex-direction: column;
-            padding-bottom: 10px;
+          display: flex;
+          flex-direction: column;
+          padding-bottom: 10px;
 
           .link {
             cursor: pointer;
@@ -131,6 +135,7 @@ $dark: #0D0D0C;
       width: 80vw;
       padding-left: 40px;
       padding-bottom: 40px;
+
       .invoices {
         margin-top: 50px;
         display: flex;
@@ -205,6 +210,7 @@ $dark: #0D0D0C;
       gap: 50px;
       flex-direction: column;
       width: 85vw;
+
       .content {
         flex: 5;
         display: flex;
@@ -243,6 +249,7 @@ $dark: #0D0D0C;
         display: flex;
         gap: 5px;
         align-items: baseline;
+
         img {
           width: 30px;
           cursor: pointer;
@@ -263,11 +270,13 @@ $dark: #0D0D0C;
           color: $dark;
           margin-bottom: 20px;
         }
+
         .invoices {
           display: flex;
           flex-direction: column;
           align-items: center;
           row-gap: 20px;
+
           h2 {
             color: $dark;
             text-align: justify;
