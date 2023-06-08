@@ -11,8 +11,9 @@ const Invoice = () => {
 
     const location = useLocation();
     const navigate = useNavigate();
+    const InvoiceIdIndex = 2;
 
-    const invoiceId = location.pathname.split("/")[2];
+    const invoiceId = location.pathname.split("/")[InvoiceIdIndex];
 
     const date = invoice.date
         ? formatDistanceToNow(new Date(invoice.date))

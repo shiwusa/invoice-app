@@ -4,7 +4,7 @@ import {
     Outlet,
 } from "react-router-dom";
 import Register from "./pages/Register";
-import Invoice from "./pages/Invoice.";
+import Invoice from "./pages/Invoice";
 import Login from "./pages/Login";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";

@@ -43,43 +43,25 @@ const Write = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let fileUrl = '';
-        if(file){
-            fileUrl = await upload();
-        }
         try {
-            if (state) {
-                await fetch(`/invoices/${state.id}`, {
-                    method: "PUT",
-                    body: JSON.stringify({
-                        company,
-                        amount,
-                        description,
-                        requester,
-                        status,
-                        file: fileUrl,
-                    }),
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
-            } else {
-                await fetch(`/invoices/`, {
-                    method: "POST",
-                    body: JSON.stringify({
-                        company,
-                        amount,
-                        description,
-                        requester,
-                        status,
-                        file: fileUrl,
-                        date: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
-                    }),
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
-            }
+            const requestData = {
+                company,
+                amount,
+                description,
+                requester,
+                status,
+                file: file ? await upload() : '',
+            };
+
+            const requestOptions = {
+                method: state ? "PUT" : "POST",
+                body: JSON.stringify(state ? requestData : { ...requestData, date: format(new Date(), "yyyy-MM-dd HH:mm:ss") }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            };
+
+            await fetch(state ? `/invoices/${state.id}` : "/invoices/", requestOptions);
             navigate("/?status=appr");
         } catch (err) {
             console.log(err);
