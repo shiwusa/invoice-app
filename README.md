@@ -3,7 +3,7 @@
 A full-stack app using React, Node.js, and MySQL.
 ## Overwiew
 ***
-### Expected Behaviour
+### Expected behaviour
 Users should be able to:
 
 - Register, log in and log out of the system
@@ -34,8 +34,8 @@ Users should be able to:
 
 #### Front-end:
 
-- [axios](https://www.npmjs.com/package/axios) - a simple promise based HTTP client for the browser and node.js
-- [moment](https://www.npmjs.com/package/moment) - a JavaScript date library for parsing, validating, manipulating, and formatting dates
+- FetchAPI - interface for making network requests.
+- [date-fns](https://www.npmjs.com/package/date-fns) - a JavaScript date library for parsing, validating, manipulating, and formatting dates
 - [sass](https://sass-lang.com/) - CSS extension
 - [react-dom](https://www.npmjs.com/package/react-dom) - a package serves as the entry point to the DOM and server renderers for React
 - [react-router](https://www.npmjs.com/package/react-router) - is the heart of React Router and provides all the core functionality for both react-router-dom and react-router-native
