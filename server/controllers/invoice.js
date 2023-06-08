@@ -14,7 +14,10 @@ export const getInvoices = (req, res) => {
     };
 
     getInvoicesFromDB(params, (err, result) => {
-        if (err) return res.status(500).send(err);
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
         const { totalPages, data } = result;
         return res
             .status(200)
@@ -27,7 +30,10 @@ export const getInvoice = (req, res) => {
     const invoiceId = req.params.id;
 
     getInvoiceFromDB(invoiceId, (err, data) => {
-        if (err) return res.status(500).json(err);
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
         return res.status(200).json(data);
     });
 };
@@ -45,7 +51,10 @@ export const addInvoice = (req, res) => {
     };
 
     addInvoiceToDB(invoiceData, (err, result) => {
-        if (err) return res.status(500).json(err);
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
         return res.json(result);
     });
 };
@@ -55,7 +64,7 @@ export const deleteInvoice = (req, res) => {
     const userId = req.userId;
 
     deleteInvoiceFromDB(invoiceId, userId, (err, result) => {
-        if (err) return res.status(403).json(err);
+        if (err) return res.status(403).json({ error: "Access denied" });
         return res.json(result);
     });
 };
@@ -74,7 +83,10 @@ export const updateInvoice = (req, res) => {
     };
 
     updateInvoiceInDB(invoiceId, userId, invoiceData, (err, result) => {
-        if (err) return res.status(500).json(err);
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
         return res.json(result);
     });
 };

@@ -9,7 +9,10 @@ export const getInvoicesFromDB = (params, callback) => {
         : `SELECT COUNT(*) as count FROM invoices`;
 
     db.query(countQuery, [status], (err, countData) => {
-        if (err) return callback(err);
+        if (err) {
+            console.log(err);
+            return callback({ error: "Internal Server Error" });
+        }
         const totalPages = Math.ceil(countData[0].count / limit);
 
         const q = status
@@ -17,7 +20,10 @@ export const getInvoicesFromDB = (params, callback) => {
             : `SELECT * FROM invoices LIMIT ${limit} OFFSET ${offset}`;
 
         db.query(q, [status], (err, data) => {
-            if (err) return callback(err);
+            if (err) {
+                console.log(err);
+                return callback({ error: "Internal Server Error" });
+            }
             callback(null, { totalPages, data });
         });
     });
@@ -28,7 +34,10 @@ export const getInvoiceFromDB = (id, callback) => {
         "SELECT i.id, `username`, `description`, `company`, `date`, `amount`, `requester`, `status`, `file` FROM users u JOIN invoices i ON u.id = i.user_id WHERE i.id = ?";
 
     db.query(q, [id], (err, data) => {
-        if (err) return callback(err);
+        if (err) {
+            console.log(err);
+            return callback({ error: "Internal Server Error" });
+        }
         callback(null, data[0]);
     });
 };
@@ -59,8 +68,11 @@ export const addInvoiceToDB = (invoiceData, callback) => {
         file,
     ];
 
-    db.query(q, [values], (err, data) => {
-        if (err) return callback(err);
+    db.query(q, [values], (err) => {
+        if (err) {
+            console.log(err);
+            return callback({ error: "Internal Server Error" });
+        }
         callback(null, "Post has been created");
     });
 };
@@ -69,7 +81,10 @@ export const deleteInvoiceFromDB = (invoiceId, userId, callback) => {
     const q = "DELETE FROM invoices WHERE `id` = ? AND `user_id` = ?";
 
     db.query(q, [invoiceId, userId], (err, data) => {
-        if (err) return callback(err);
+        if (err) {
+            console.log(err);
+            return callback({ error: "Internal Server Error" });
+        }
         if (data.affectedRows === 0)
             return callback("You can delete only your invoices");
         callback(null, "Post has been deleted");
@@ -84,8 +99,11 @@ export const updateInvoiceInDB = (invoiceId, userId, invoiceData, callback) => {
 
     const values = [company, amount, description, requester, status, file];
 
-    db.query(q, [...values, invoiceId, userId], (err, data) => {
-        if (err) return callback(err);
+    db.query(q, [...values, invoiceId, userId], (err) => {
+        if (err) {
+            console.log(err);
+            return callback({ error: "Internal Server Error" });
+        }
         callback(null, "Post has been updated");
     });
 };

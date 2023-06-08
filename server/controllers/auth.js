@@ -7,7 +7,10 @@ export const register = (req, res) => {
     const q = "SELECT * FROM users WHERE email = ? OR username = ?";
 
     db.query(q, [req.body.email, req.body.username], (err, data) => {
-        if (err) return res.json(err);
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
         if (data.length) return res.status(409).json("User already exists");
 
         const password = req.body.password;
@@ -25,7 +28,7 @@ export const register = (req, res) => {
             const q = "INSERT INTO users(`username`,`email`,`password`) VALUES (?)";
             const values = [req.body.username, req.body.email, serializedHash];
 
-            db.query(q, [values], (err, data) => {
+            db.query(q, [values], (err) => {
                 if (err) {
                     console.error(err);
                     return res.status(500).json("Internal Server Error");
@@ -40,7 +43,10 @@ export const login = (req, res) => {
     const q = "SELECT * FROM users WHERE username = ?";
 
     db.query(q, [req.body.username], (err, data) => {
-        if (err) return res.status(500).json(err);
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
         if (data.length === 0) return res.status(404).json("User not found");
 
         const serializedHash = data[0].password;
@@ -57,7 +63,7 @@ export const login = (req, res) => {
         if (!isPasswordCorrect)
             return res.status(400).json("Wrong username or password");
 
-        const token = jwt.sign({ id: data[0].id }, config.jwtSecret, { expiresIn: '1h' });
+        const token = jwt.sign({ id: data[0].id }, config.jwtSecret);
         const { password, ...other } = data[0];
 
         res
