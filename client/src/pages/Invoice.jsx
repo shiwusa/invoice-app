@@ -3,18 +3,18 @@ import Edit from "../img/edit.png";
 import Delete from "../img/delete.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Menu from "../components/Menu";
+import CurrencyConversion from "../components/CurrencyConversion";
 import { formatDistanceToNow } from "date-fns";
 import { AuthContext } from "../context/authContext";
 
 const Invoice = () => {
   const [invoice, setInvoice] = useState({});
+  const [selectedCurrency, setSelectedCurrency] = useState("UAH");
 
   const location = useLocation();
   const navigate = useNavigate();
   const InvoiceIdIndex = 2;
-
   const invoiceId = location.pathname.split("/")[InvoiceIdIndex];
-
   const date = invoice.date ? formatDistanceToNow(new Date(invoice.date)) : "";
 
   const { currentUser } = useContext(AuthContext);
@@ -29,6 +29,7 @@ const Invoice = () => {
         console.log(err);
       }
     };
+
     fetchData();
   }, [invoiceId]);
 
@@ -43,6 +44,10 @@ const Invoice = () => {
     }
   };
 
+  const handleCurrencyChange = (e) => {
+    setSelectedCurrency(e.target.value);
+  };
+
   return (
     <div className="invoice">
       <div className="content">
@@ -53,7 +58,15 @@ const Invoice = () => {
         <div className="details">
           <h1>Company: {invoice.company}</h1>
           <p>Description: {invoice.desc}</p>
-          <p>Amount: {invoice.amount} ₴</p>
+          <p>
+            Amount: {invoice.amount} ₴{" "}
+            <select value={selectedCurrency} onChange={handleCurrencyChange}>
+              <option value="UAH">UAH</option>
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+            </select>
+          </p>
+          <CurrencyConversion to={selectedCurrency} val={invoice.amount} />
           <p>Requester: {invoice.requester}</p>
           <p>Status: {invoice.status}</p>
           {currentUser && invoice.file && (
