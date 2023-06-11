@@ -1,4 +1,3 @@
-import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext();
@@ -9,13 +8,30 @@ export const AuthContexProvider = ({ children }) => {
   );
 
   const login = async (inputs) => {
-    const res = await axios.post("/auth/login", inputs);
-    setCurrentUser(res.data);
+    try {
+      const res = await fetch("/auth/login", {
+        method: "POST",
+        body: JSON.stringify(inputs),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+      setCurrentUser(data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const logout = async (inputs) => {
-    await axios.post("/auth/logout");
-    setCurrentUser(null);
+  const logout = async () => {
+    try {
+      await fetch("/auth/logout", {
+        method: "POST",
+      });
+      setCurrentUser(null);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {

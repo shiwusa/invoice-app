@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
 
 const Menu = ({ status }) => {
@@ -8,8 +7,9 @@ const Menu = ({ status }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`/invoices/?status=${status}`);
-        setInvoices(res.data);
+        const res = await fetch(`/invoices/?status=${status}`);
+        const data = await res.json();
+        setInvoices(data);
       } catch (err) {
         console.log(err);
       }
