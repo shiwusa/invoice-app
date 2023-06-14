@@ -29,6 +29,29 @@ export const getInvoicesFromDB = (params, callback) => {
   });
 };
 
+export const getStatisticsFromDB = (chartId, callback) => {
+  let query = "";
+  if (chartId === "1") {
+    query = "SELECT status, COUNT(*) as count FROM invoices GROUP BY status";
+  } else if (chartId === "2") {
+    query =
+      "SELECT status, SUM(amount) as amount FROM invoices GROUP BY status";
+  } else if (chartId === "3") {
+    query =
+      "SELECT DATE_FORMAT(date, '%Y-%m-%d') AS date, SUM(amount) AS amount FROM invoices WHERE status = 'paid' GROUP BY date";
+  } else {
+    return callback({ error: "Invalid chart ID" });
+  }
+
+  db.query(query, (err, data) => {
+    if (err) {
+      console.log(err);
+      return callback({ error: "Internal Server Error" });
+    }
+    callback(null, data);
+  });
+};
+
 export const getInvoiceFromDB = (id, callback) => {
   const q =
     "SELECT i.id, `username`, `description`, `company`, `date`, `amount`, `requester`, `status`, `file` FROM users u JOIN invoices i ON u.id = i.user_id WHERE i.id = ?";

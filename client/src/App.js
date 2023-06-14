@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Write from "./pages/Write";
+import Statistics from "./pages/Statistics";
 import "./style.scss";
 
 const Layout = () => {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "/write",
         element: <Write />,
+      },
+      {
+        path: "/statistics",
+        element: <Statistics />,
       },
     ],
   },

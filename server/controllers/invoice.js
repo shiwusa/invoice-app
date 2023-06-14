@@ -3,6 +3,7 @@ import {
   deleteInvoiceFromDB,
   getInvoiceFromDB,
   getInvoicesFromDB,
+  getStatisticsFromDB,
   updateInvoiceInDB,
 } from "../services/invoiceService.js";
 
@@ -23,9 +24,19 @@ export const getInvoices = (req, res) => {
   });
 };
 
+export const getStatistics = (req, res) => {
+  const chartId = req.params.id;
+  getStatisticsFromDB(chartId, (err, data) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+    return res.status(200).json(data);
+  });
+};
+
 export const getInvoice = (req, res) => {
   const invoiceId = req.params.id;
-
   getInvoiceFromDB(invoiceId, (err, data) => {
     if (err) {
       console.log(err);
