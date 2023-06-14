@@ -25,6 +25,7 @@ const Navbar = () => {
     { label: "Scheduled", to: "/?status=sched" },
     { label: "Entered", to: "/?status=ent" },
     { label: "Pending", to: "/?status=pend" },
+    { label: "Statistics", to: "/statistics" },
   ];
 
   return (
