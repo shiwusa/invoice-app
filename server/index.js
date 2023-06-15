@@ -31,6 +31,6 @@ app.post("/api/upload", upload.single("file"), function (req, res) {
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/auth", authRoutes);
 
-app.listen(config.port, config.hostname, () => {
-  console.log(`Connected on ${config.hostname}:${config.port}`);
+app.listen(config.port, () => {
+  console.log(`Connected on port ${config.port}`);
 });
